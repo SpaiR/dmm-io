@@ -6,7 +6,7 @@ import lombok.val;
 
 import java.util.regex.Pattern;
 
-final class BasicTileContentReader {
+final class ByondTileContentReader {
 
     private final Pattern objsPattern = Pattern.compile("(,|^)(?=/)(?![^{]*[}])");
     private final Pattern objWithVarPattern = Pattern.compile("^(/.+)\\{(.*)}");

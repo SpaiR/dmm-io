@@ -10,7 +10,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import static io.github.spair.dmm.io.writer.TileContentStringifier.toBasicString;
+import static io.github.spair.dmm.io.writer.TileContentStringifier.toByondString;
 import static io.github.spair.dmm.io.writer.TileContentStringifier.toTGMString;
 
 public final class DmmWriter {
@@ -19,12 +19,12 @@ public final class DmmWriter {
     private static final String TGM_HEADER =
             "//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE";
 
-    public static File saveAsBasic(final File fileToSave, final DmmData map) {
+    public static File saveAsByond(final File fileToSave, final DmmData map) {
         checkFileToSave(fileToSave);
 
         try (val writer = new BufferedWriter(new FileWriter(fileToSave))) {
             for (String key : map.getTileContentsByKey().keySet()) {
-                writer.write(toBasicString(map.getTileContentByKey(key)) + NEW_LINE);
+                writer.write(toByondString(map.getTileContentByKey(key)) + NEW_LINE);
             }
 
             writer.append(NEW_LINE);

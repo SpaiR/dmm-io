@@ -7,7 +7,7 @@ final class TileContentStringifier {
 
     private static final String NEW_LINE = System.lineSeparator();
 
-    static String toBasicString(final TileContent tileContent) {
+    static String toByondString(final TileContent tileContent) {
         StringBuilder sb = new StringBuilder('"' + tileContent.getKey() + "\" = (");
 
         val objIter = tileContent.getTileObjects().iterator();

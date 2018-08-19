@@ -34,10 +34,10 @@ public class TileContentStringifierTest {
     }
 
     @Test
-    public void testToBasicString() {
+    public void testToByondString() {
         assertEquals(
                 "\"aaa\" = (/obj/item,/area/zone{var1 = value1},/turf/ground{var2 = value2; var3 = value3})",
-                TileContentStringifier.toBasicString(tileContent)
+                TileContentStringifier.toByondString(tileContent)
         );
     }
 

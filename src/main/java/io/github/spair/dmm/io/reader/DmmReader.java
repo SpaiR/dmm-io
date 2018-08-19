@@ -37,7 +37,7 @@ public final class DmmReader {
     }
 
     private static MapReader getReader(final List<String> lines) {
-        return lines.get(0).startsWith(TGM_MARKER) ? new TGMReader(lines) : new BasicReader(lines);
+        return lines.get(0).startsWith(TGM_MARKER) ? new TGMReader(lines) : new ByondReader(lines);
     }
 
     private DmmReader() {

@@ -35,7 +35,7 @@ The map itself could be in standard BYOND format as well as in TGM, reader will 
 
 To write `DmmData` to file use `DmmWriter` class like that:
 ```
-DmmWriter.saveAsBasic(fileToSave, dmmData)  // to save in BYOND format
+DmmWriter.saveAsByond(fileToSave, dmmData)  // to save in BYOND format
 DmmWriter.saveAsTGM(fileToSave, dmmData)    // to save in TGM format
 ```
 If `fileToSave` doesn't exist it will be created.

@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-final class BasicReader implements MapReader {
+final class ByondReader implements MapReader {
 
     private final DmmData dmmData = new DmmData();
-    private final BasicTileContentReader tileContentReader = new BasicTileContentReader();
+    private final ByondTileContentReader tileContentReader = new ByondTileContentReader();
 
     private final List<String> mapLines;
     private final Map<TileLocation, String> localKeysByLocation = new HashMap<>();
@@ -26,7 +26,7 @@ final class BasicReader implements MapReader {
     private int keyLength;
     private Pattern keySplit;
 
-    BasicReader(final List<String> mapLines) {
+    ByondReader(final List<String> mapLines) {
         this.mapLines = mapLines;
     }
 

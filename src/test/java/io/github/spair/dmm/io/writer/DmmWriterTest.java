@@ -3,7 +3,6 @@ package io.github.spair.dmm.io.writer;
 import io.github.spair.dmm.io.*;
 import io.github.spair.dmm.io.reader.DmmReader;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,8 +28,8 @@ public class DmmWriterTest {
     }
 
     @Test
-    public void testSaveAsBasic() {
-        DmmWriter.saveAsBasic(tmpFile, dataToSave);
+    public void testSaveAsByond() {
+        DmmWriter.saveAsByond(tmpFile, dataToSave);
         assertEquals(dataToSave, DmmReader.readMap(tmpFile));
     }
 
