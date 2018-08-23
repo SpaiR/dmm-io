@@ -11,18 +11,13 @@ import java.util.List;
 
 public final class DmmReader {
 
-    private static final String DMM_SUFFIX = ".dmm";
     private static final String TGM_MARKER = "//MAP";   // No point to check this header fully since it's for sure TGM.
 
     public static DmmData readMap(final File mapFile) {
-        if (!mapFile.exists() || !mapFile.getName().endsWith(DMM_SUFFIX)) {
-            throw new IllegalArgumentException("Provided file should exist and has suffix " + DMM_SUFFIX);
-        }
-
         val fileLines = readAllLines(mapFile);
 
         if (fileLines.isEmpty()) {
-            throw new IllegalArgumentException("Map file could not be empty");
+            throw new IllegalArgumentException("Map file is empty");
         }
 
         return getReader(fileLines).read();
