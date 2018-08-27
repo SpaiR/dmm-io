@@ -31,6 +31,7 @@ final class TGMReader implements MapReader {
 
     TGMReader(final List<String> mapLines) {
         this.mapLines = mapLines;
+        this.dmmData.setTgm(true);
     }
 
     @Override

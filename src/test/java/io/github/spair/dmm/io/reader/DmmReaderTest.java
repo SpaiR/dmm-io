@@ -8,15 +8,13 @@ import static org.junit.Assert.*;
 
 public class DmmReaderTest {
 
-    private DmmData expectedData = DmmDataUtil.getDmmData();
-
     @Test
     public void testReadMapAsBasic() {
-        assertEquals(expectedData, DmmReader.readMap(ResourceUtil.readResourceFile("basic.dmm")));
+        assertEquals(DmmDataUtil.getDmmData(false), DmmReader.readMap(ResourceUtil.readResourceFile("basic.dmm")));
     }
 
     @Test
     public void testReadMapAsTGM() {
-        assertEquals(expectedData, DmmReader.readMap(ResourceUtil.readResourceFile("tgm.dmm")));
+        assertEquals(DmmDataUtil.getDmmData(true), DmmReader.readMap(ResourceUtil.readResourceFile("tgm.dmm")));
     }
 }

@@ -12,6 +12,8 @@ import java.util.TreeMap;
 @Setter(AccessLevel.NONE)
 public class DmmData {
 
+    private boolean isTgm = false;
+
     private int maxX;
     private int maxY;
 
@@ -59,5 +61,9 @@ public class DmmData {
 
     public void setKeyLength(final int keyLength) {
         this.keyLength = keyLength;
+    }
+
+    public void setTgm(final boolean isTgm) {
+        this.isTgm = isTgm;
     }
 }

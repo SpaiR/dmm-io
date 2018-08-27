@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DmmWriterTest {
 
-    private DmmData dataToSave = DmmDataUtil.getDmmData();
     private File tmpFile;
 
     @Before
@@ -29,13 +28,15 @@ public class DmmWriterTest {
 
     @Test
     public void testSaveAsByond() {
-        DmmWriter.saveAsByond(tmpFile, dataToSave);
-        assertEquals(dataToSave, DmmReader.readMap(tmpFile));
+        DmmData dmmData = DmmDataUtil.getDmmData(false);
+        DmmWriter.saveAsByond(tmpFile, dmmData);
+        assertEquals(dmmData, DmmReader.readMap(tmpFile));
     }
 
     @Test
     public void testSaveAsTGM() {
-        DmmWriter.saveAsTGM(tmpFile, dataToSave);
-        assertEquals(dataToSave, DmmReader.readMap(tmpFile));
+        DmmData dmmData = DmmDataUtil.getDmmData(true);
+        DmmWriter.saveAsTGM(tmpFile, dmmData);
+        assertEquals(dmmData, DmmReader.readMap(tmpFile));
     }
 }

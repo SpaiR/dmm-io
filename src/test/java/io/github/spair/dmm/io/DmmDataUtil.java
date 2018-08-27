@@ -1,8 +1,11 @@
 package io.github.spair.dmm.io;
 
 public final class DmmDataUtil {
-    public static DmmData getDmmData() {
+    public static DmmData getDmmData(boolean isTGM) {
         DmmData dmmData = new DmmData();
+
+        dmmData.setTgm(isTGM);
+
         dmmData.setMaxX(3);
         dmmData.setMaxY(3);
         dmmData.setKeyLength(1);
