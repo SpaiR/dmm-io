@@ -6,7 +6,7 @@
 
 ## About
 
-I/O library for dmm files of BYOND and TGM format.
+I/O library for dmm files of default and TGM format.
 
 ## Installation
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.spair/dmm-io.svg?style=flat)](https://search.maven.org/search?q=a:dmm-io%20g:io.github.spair)
