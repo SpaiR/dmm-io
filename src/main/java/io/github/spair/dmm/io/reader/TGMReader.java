@@ -4,25 +4,21 @@ import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileContent;
 import io.github.spair.dmm.io.TileLocation;
 import io.github.spair.dmm.io.TileObject;
+import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
-final class TGMReader implements MapReader {
+final class TGMReader extends AbstractReader implements MapReader {
 
-    private final DmmData dmmData = new DmmData();
-
-    private final List<String> mapLines;
-    private final List<TileContent> localTileContents = new ArrayList<>();
-    private final Map<TileLocation, String> localKeysByLocation = new HashMap<>();
+    private final TileObjectComparator objectComparator = new TileObjectComparator();
+    private final Map<String, TileContent> localTileContentsByKey = new HashMap<>();
 
     private TileContent currentTileContent;
     private TileObject currentTileObject;
 
-    private String currentLine;
     private int currentX;
     private int currentY;
     private int currentKeyLength;
@@ -30,7 +26,7 @@ final class TGMReader implements MapReader {
     private boolean isTilesRead = false;
 
     TGMReader(final List<String> mapLines) {
-        this.mapLines = mapLines;
+        super(mapLines);
         this.dmmData.setTgm(true);
     }
 
@@ -79,17 +75,14 @@ final class TGMReader implements MapReader {
         dmmData.setMaxX(currentX);
         dmmData.setMaxY(currentY - 1);
 
-        localTileContents.forEach(tileContent -> {
-            dmmData.addTileContentByKey(tileContent.getKey(), tileContent);
-            dmmData.addKeyByTileContent(tileContent, tileContent.getKey());
+        localTileContentsByKey.forEach((key, tileContent) -> {
+            tileContent.getTileObjects().sort(objectComparator);
+            addTileContentOrTraceDuplicateKey(key, tileContent);
         });
 
-        // For consistency reasons Y axis for locations is mirrored, since we read file from top to bottom,
-        // while map in BYOND is represented from bottom to top.
-        localKeysByLocation.forEach((location, key) -> {
-            location.setY(currentY - location.getY());
-            dmmData.addTileContentByLocation(location, dmmData.getTileContentByKey(key));
-        });
+        replaceKeysWithDuplContentForLocations();
+        mirrorLocationYAxisAndAddToDmmData();
+        removeKeysWithoutLocation();
 
         return dmmData;
     }
@@ -102,8 +95,8 @@ final class TGMReader implements MapReader {
         }
 
         val key = currentLine.substring(1, 1 + currentKeyLength);
-        currentTileContent = new TileContent(key);
-        localTileContents.add(currentTileContent);
+        currentTileContent = new TileContent();
+        localTileContentsByKey.put(key, currentTileContent);
     }
 
     private void addNewTileObject() {

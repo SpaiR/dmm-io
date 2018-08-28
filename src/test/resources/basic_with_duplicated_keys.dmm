@@ -1,0 +1,10 @@
+"a" = (/obj/structure/inflatable/survival,/turf/simulated/floor/pod)
+"b" = (/obj/structure/sign/mining/survival{icon_state = "survival"; dir = 1},/obj/structure/inflatable/survival)
+"c" = (/obj/structure/fans,/turf/simulated/floor/pod,/area/survivalpod{icon_state = "survival"})
+"d" = (/obj/structure/inflatable/survival,/turf/simulated/floor/pod)
+
+(1,1,1) = {"
+aaa
+bcb
+ddd
+"}

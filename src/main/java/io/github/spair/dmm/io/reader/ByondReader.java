@@ -4,20 +4,13 @@ import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileLocation;
 import lombok.val;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-final class ByondReader implements MapReader {
+final class ByondReader extends AbstractReader implements MapReader {
 
-    private final DmmData dmmData = new DmmData();
     private final ByondTileContentReader tileContentReader = new ByondTileContentReader();
 
-    private final List<String> mapLines;
-    private final Map<TileLocation, String> localKeysByLocation = new HashMap<>();
-
-    private String currentLine;
     private int currentY = 1;
     private int maxX;
 
@@ -27,7 +20,7 @@ final class ByondReader implements MapReader {
     private Pattern keySplit;
 
     ByondReader(final List<String> mapLines) {
-        this.mapLines = mapLines;
+        super(mapLines);
     }
 
     @Override
@@ -55,12 +48,9 @@ final class ByondReader implements MapReader {
         dmmData.setMaxX(maxX);
         dmmData.setMaxY(currentY - 1);
 
-        // For consistency reasons Y axis for locations is mirrored, since we read file from top to bottom,
-        // while map in BYOND is represented from bottom to top.
-        localKeysByLocation.forEach((location, key) -> {
-            location.setY(currentY - location.getY());
-            dmmData.addTileContentByLocation(location, dmmData.getTileContentByKey(key));
-        });
+        replaceKeysWithDuplContentForLocations();
+        mirrorLocationYAxisAndAddToDmmData();
+        removeKeysWithoutLocation();
 
         return dmmData;
     }
@@ -76,10 +66,7 @@ final class ByondReader implements MapReader {
         val rawValue = currentLine.substring(currentLine.indexOf('('));
         val tileContent = tileContentReader.read(rawValue.substring(1, rawValue.length() - 1));
 
-        tileContent.setKey(key);
-
-        dmmData.addTileContentByKey(key, tileContent);
-        dmmData.addKeyByTileContent(tileContent, key);
+        addTileContentOrTraceDuplicateKey(key, tileContent);
     }
 
     private void readMapTiles() {

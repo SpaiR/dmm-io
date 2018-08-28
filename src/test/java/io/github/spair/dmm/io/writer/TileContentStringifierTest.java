@@ -15,7 +15,6 @@ public class TileContentStringifierTest {
     @Before
     public void setUp() {
         tileContent = new TileContent();
-        tileContent.setKey("aaa");
 
         TileObject tileObject = new TileObject();
         tileObject.setType("/obj/item");
@@ -37,7 +36,7 @@ public class TileContentStringifierTest {
     public void testToByondString() {
         assertEquals(
                 "\"aaa\" = (/obj/item,/area/zone{var1 = value1},/turf/ground{var2 = value2; var3 = value3})",
-                TileContentStringifier.toByondString(tileContent)
+                TileContentStringifier.toByondString("aaa", tileContent)
         );
     }
 
@@ -53,7 +52,7 @@ public class TileContentStringifierTest {
                         + "\tvar2 = value2;" + NEW_LINE
                         + "\tvar3 = value3" + NEW_LINE
                         + "\t})",
-                TileContentStringifier.toTGMString(tileContent)
+                TileContentStringifier.toTGMString("aaa", tileContent)
         );
     }
 }

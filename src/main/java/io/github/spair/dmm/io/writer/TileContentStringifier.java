@@ -7,8 +7,8 @@ final class TileContentStringifier {
 
     private static final String NEW_LINE = System.lineSeparator();
 
-    static String toByondString(final TileContent tileContent) {
-        StringBuilder sb = new StringBuilder('"' + tileContent.getKey() + "\" = (");
+    static String toByondString(final String key, final TileContent tileContent) {
+        StringBuilder sb = new StringBuilder('"' + key + "\" = (");
 
         val objIter = tileContent.getTileObjects().iterator();
         while (objIter.hasNext()) {
@@ -44,8 +44,8 @@ final class TileContentStringifier {
         return sb.toString();
     }
 
-    static String toTGMString(final TileContent tileContent) {
-        StringBuilder sb = new StringBuilder('"' + tileContent.getKey() + "\" = (").append(NEW_LINE);
+    static String toTGMString(final String key, final TileContent tileContent) {
+        StringBuilder sb = new StringBuilder('"' + key + "\" = (").append(NEW_LINE);
 
         val objIter = tileContent.getTileObjects().iterator();
         while (objIter.hasNext()) {

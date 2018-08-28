@@ -14,19 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class TileContent implements Iterable<TileObject> {
 
-    private String key;
     private List<TileObject> tileObjects = new ArrayList<>();
-
-    public TileContent(final String key) {
-        this.key = key;
-    }
 
     public void addTileObject(final TileObject tileObject) {
         tileObjects.add(tileObject);
-    }
-
-    public void setKey(final String key) {
-        this.key = key;
     }
 
     @Override

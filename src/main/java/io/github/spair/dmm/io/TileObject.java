@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Data
 @Setter(AccessLevel.NONE)
@@ -14,7 +14,7 @@ import java.util.Map;
 public class TileObject {
 
     private String type;
-    private Map<String, String> vars = new LinkedHashMap<>();
+    private Map<String, String> vars = new TreeMap<>();
 
     public TileObject(final String type) {
         this.type = type;

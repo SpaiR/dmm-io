@@ -10,11 +10,11 @@ public final class DmmDataUtil {
         dmmData.setMaxY(3);
         dmmData.setKeyLength(1);
 
-        TileContent a = new TileContent("a");
+        TileContent a = new TileContent();
         a.addTileObject(new TileObject("/obj/structure/inflatable/survival"));
         a.addTileObject(new TileObject("/turf/simulated/floor/pod"));
 
-        TileContent b = new TileContent("b");
+        TileContent b = new TileContent();
         b.addTileObject(new TileObject("/obj/structure/sign/mining/survival") {
             {
                 addVar("icon_state", "\"survival\"");
@@ -23,7 +23,7 @@ public final class DmmDataUtil {
         });
         b.addTileObject(new TileObject("/obj/structure/inflatable/survival"));
 
-        TileContent c = new TileContent("c");
+        TileContent c = new TileContent();
         c.addTileObject(new TileObject("/obj/structure/fans"));
         c.addTileObject(new TileObject("/turf/simulated/floor/pod"));
         c.addTileObject(new TileObject("/area/survivalpod") {

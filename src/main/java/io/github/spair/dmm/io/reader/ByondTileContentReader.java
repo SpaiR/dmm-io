@@ -2,11 +2,14 @@ package io.github.spair.dmm.io.reader;
 
 import io.github.spair.dmm.io.TileContent;
 import io.github.spair.dmm.io.TileObject;
+import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
 import java.util.regex.Pattern;
 
 final class ByondTileContentReader {
+
+    private final TileObjectComparator comparator = new TileObjectComparator();
 
     private final Pattern objsPattern = Pattern.compile("(,|^)(?=/)(?![^{]*[}])");
     private final Pattern objWithVarPattern = Pattern.compile("^(/.+)\\{(.*)}");
@@ -36,6 +39,8 @@ final class ByondTileContentReader {
 
             tileContent.addTileObject(tileObject);
         }
+
+        tileContent.getTileObjects().sort(comparator);
 
         return tileContent;
     }

@@ -13,6 +13,7 @@ import java.io.UncheckedIOException;
 import static io.github.spair.dmm.io.writer.TileContentStringifier.toByondString;
 import static io.github.spair.dmm.io.writer.TileContentStringifier.toTGMString;
 
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public final class DmmWriter {
 
     private static final String NEW_LINE = System.lineSeparator();
@@ -24,7 +25,7 @@ public final class DmmWriter {
 
         try (val writer = new BufferedWriter(new FileWriter(fileToSave))) {
             for (String key : map.getTileContentsByKey().keySet()) {
-                writer.write(toByondString(map.getTileContentByKey(key)) + NEW_LINE);
+                writer.write(toByondString(key, map.getTileContentByKey(key)) + NEW_LINE);
             }
 
             writer.append(NEW_LINE);
@@ -53,7 +54,7 @@ public final class DmmWriter {
             writer.write(NEW_LINE);
 
             for (String key : map.getTileContentsByKey().keySet()) {
-                writer.write(toTGMString(map.getTileContentByKey(key)) + NEW_LINE);
+                writer.write(toTGMString(key, map.getTileContentByKey(key)) + NEW_LINE);
             }
 
             for (int x = 1; x <= map.getMaxX(); x++) {
