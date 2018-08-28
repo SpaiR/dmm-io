@@ -29,7 +29,7 @@ abstract class AbstractReader implements MapReader {
     // Duplicated keys are saved to 'localKeysDuplicates'
     // to provide 'key/duplContent -> origKey/duplContent' connection.
     void addTileContentOrTraceDuplicateKey(final String key, final TileContent tileContent) {
-        if (!dmmData.getKeysByTileContent().containsKey(tileContent)) {
+        if (!dmmData.hasKeyByTileContent(tileContent)) {
             dmmData.addTileContentByKey(key, tileContent);
             dmmData.addKeyByTileContent(tileContent, key);
         } else {

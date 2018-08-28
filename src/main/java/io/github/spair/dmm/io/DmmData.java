@@ -51,6 +51,18 @@ public class DmmData {
         return getKeyByTileContent(getTileContentByLocation(location));
     }
 
+    public boolean hasTileContentByKey(final String key) {
+        return tileContentsByKey.containsKey(key);
+    }
+
+    public boolean hasTileContentByLocation(final TileLocation tileLocation) {
+        return tileContentsByLocation.containsKey(tileLocation);
+    }
+
+    public boolean hasKeyByTileContent(final TileContent tileContent) {
+        return keysByTileContent.containsKey(tileContent);
+    }
+
     public void setMaxX(final int maxX) {
         this.maxX = maxX;
     }
