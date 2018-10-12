@@ -7,7 +7,7 @@ import lombok.val;
 import java.util.List;
 import java.util.regex.Pattern;
 
-final class ByondReader extends AbstractReader implements MapReader {
+final class ByondReader extends MapReader {
 
     private final ByondTileContentReader tileContentReader = new ByondTileContentReader();
 

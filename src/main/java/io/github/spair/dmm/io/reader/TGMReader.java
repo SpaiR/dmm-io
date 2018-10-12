@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-final class TGMReader extends AbstractReader implements MapReader {
+final class TGMReader extends MapReader {
 
     private final TileObjectComparator objectComparator = new TileObjectComparator();
     private final Map<String, TileContent> localTileContentsByKey = new HashMap<>();
