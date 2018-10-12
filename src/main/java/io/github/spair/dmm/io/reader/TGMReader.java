@@ -7,7 +7,7 @@ import io.github.spair.dmm.io.TileObject;
 import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
-import java.util.List;
+import java.io.BufferedReader;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -25,16 +25,14 @@ final class TGMReader extends MapReader {
 
     private boolean isTilesRead = false;
 
-    TGMReader(final List<String> mapLines) {
-        super(mapLines);
+    TGMReader(final BufferedReader bufferedReader) {
+        super(bufferedReader);
         this.dmmData.setTgm(true);
     }
 
     @Override
     public DmmData read() {
-        for (int i = 1; i < mapLines.size(); i++) { // First line will be skipped to avoid reading of header.
-            currentLine = mapLines.get(i);
-
+        while ((currentLine = readLine()) != null) {
             if (currentLine.isEmpty()) {
                 currentTileContent = null;
                 currentTileObject = null;
@@ -75,10 +73,11 @@ final class TGMReader extends MapReader {
         dmmData.setMaxX(currentX);
         dmmData.setMaxY(currentY - 1);
 
-        localTileContentsByKey.forEach((key, tileContent) -> {
+        for (val entry : localTileContentsByKey.entrySet()) {
+            val tileContent = entry.getValue();
             tileContent.getTileObjects().sort(objectComparator);
-            addTileContentOrTraceDuplicateKey(key, tileContent);
-        });
+            addTileContentOrTraceDuplicateKey(entry.getKey(), tileContent);
+        }
 
         replaceKeysWithDuplContentForLocations();
         mirrorLocationYAxisAndAddToDmmData();

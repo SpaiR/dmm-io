@@ -4,7 +4,7 @@ import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileLocation;
 import lombok.val;
 
-import java.util.List;
+import java.io.BufferedReader;
 import java.util.regex.Pattern;
 
 final class ByondReader extends MapReader {
@@ -19,19 +19,18 @@ final class ByondReader extends MapReader {
     private int keyLength;
     private Pattern keySplit;
 
-    ByondReader(final List<String> mapLines) {
-        super(mapLines);
+    ByondReader(final BufferedReader bufferedReader) {
+        super(bufferedReader);
     }
 
     @Override
     public DmmData read() {
-        for (String line : mapLines) {
-            if (line.isEmpty()) {
+        while ((currentLine = readLine()) != null) {
+            if (currentLine.isEmpty()) {
                 isTilesRead = true;
                 continue;
             }
 
-            currentLine = line;
             val firstLineChar = currentLine.charAt(0);
 
             if (firstLineChar == '"' && !isTilesRead) {
