@@ -8,9 +8,9 @@ import lombok.val;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 @SuppressWarnings("checkstyle:VisibilityModifier")
 abstract class MapReader {
@@ -43,8 +43,7 @@ abstract class MapReader {
     // to provide 'key/duplContent -> origKey/duplContent' connection.
     void addTileContentOrTraceDuplicateKey(final String key, final TileContent tileContent) {
         if (!dmmData.hasKeyByTileContent(tileContent)) {
-            dmmData.addTileContentByKey(key, tileContent);
-            dmmData.addKeyByTileContent(tileContent, key);
+            dmmData.addKeyAndTileContent(key, tileContent);
         } else {
             localKeysDuplicates.put(key, dmmData.getKeyByTileContent(tileContent));
         }
@@ -80,14 +79,13 @@ abstract class MapReader {
     void removeKeysWithoutLocation() {
         val keysWithLocation = new HashSet<String>();
 
-        for (val entry : dmmData.getTileContentsByLocation().entrySet()) {
-            keysWithLocation.add(dmmData.getKeyByLocation(entry.getKey()));
+        for (val location : dmmData.getLocations()) {
+            keysWithLocation.add(dmmData.getKeyByLocation(location));
         }
 
-        for (val key : new HashSet<>(dmmData.getTileContentsByKey().keySet())) {
+        for (val key : new HashSet<>(dmmData.getKeys())) {
             if (!keysWithLocation.contains(key)) {
-                val tileContent = dmmData.getTileContentsByKey().remove(key);
-                dmmData.getKeysByTileContent().remove(tileContent);
+                dmmData.removeKeyAndTileContent(key);
             }
         }
     }

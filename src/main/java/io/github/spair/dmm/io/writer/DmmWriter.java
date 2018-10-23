@@ -1,7 +1,6 @@
 package io.github.spair.dmm.io.writer;
 
 import io.github.spair.dmm.io.DmmData;
-import io.github.spair.dmm.io.TileLocation;
 import lombok.val;
 
 import java.io.File;
@@ -24,7 +23,7 @@ public final class DmmWriter {
         checkFileToSave(fileToSave);
 
         try (val writer = new BufferedWriter(new FileWriter(fileToSave))) {
-            for (String key : map.getTileContentsByKey().keySet()) {
+            for (String key : map.getKeys()) {
                 writer.write(toByondString(key, map.getTileContentByKey(key)) + NEW_LINE);
             }
 
@@ -33,7 +32,7 @@ public final class DmmWriter {
 
             for (int y = map.getMaxY(); y >= 1; y--) {
                 for (int x = 1; x <= map.getMaxX(); x++) {
-                    writer.write(map.getKeyByLocation(TileLocation.of(x, y)));
+                    writer.write(map.getKeyByLocation(x, y));
                 }
                 writer.write(NEW_LINE);
             }
@@ -53,7 +52,7 @@ public final class DmmWriter {
             writer.write(TGM_HEADER);
             writer.write(NEW_LINE);
 
-            for (String key : map.getTileContentsByKey().keySet()) {
+            for (String key : map.getKeys()) {
                 writer.write(toTGMString(key, map.getTileContentByKey(key)) + NEW_LINE);
             }
 
@@ -62,7 +61,7 @@ public final class DmmWriter {
                 writer.write("(" + x + ",1,1) = {\"" + NEW_LINE);
 
                 for (int y = map.getMaxY(); y >= 1; y--) {
-                    writer.write(map.getKeyByLocation(TileLocation.of(x, y)));
+                    writer.write(map.getKeyByLocation(x, y));
                     writer.write(NEW_LINE);
                 }
 

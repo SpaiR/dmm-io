@@ -2,7 +2,6 @@ package io.github.spair.dmm.io;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @Data
 @Setter(AccessLevel.NONE)
-@NoArgsConstructor
 public class TileContent implements Iterable<TileObject> {
 
     private List<TileObject> tileObjects = new ArrayList<>();

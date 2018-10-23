@@ -10,16 +10,16 @@ final class TileContentStringifier {
     static String toByondString(final String key, final TileContent tileContent) {
         StringBuilder sb = new StringBuilder('"' + key + "\" = (");
 
-        val objIter = tileContent.getTileObjects().iterator();
+        val objIter = tileContent.iterator();
         while (objIter.hasNext()) {
             val tileObject = objIter.next();
 
             sb.append(tileObject.getType());
 
-            if (!tileObject.getVars().isEmpty()) {
+            if (tileObject.hasVars()) {
                 sb.append('{');
 
-                val varIter = tileObject.getVars().entrySet().iterator();
+                val varIter = tileObject.iterator();
                 while (varIter.hasNext()) {
                     val varEntry = varIter.next();
                     val varName = varEntry.getKey();
@@ -47,16 +47,16 @@ final class TileContentStringifier {
     static String toTGMString(final String key, final TileContent tileContent) {
         StringBuilder sb = new StringBuilder('"' + key + "\" = (").append(NEW_LINE);
 
-        val objIter = tileContent.getTileObjects().iterator();
+        val objIter = tileContent.iterator();
         while (objIter.hasNext()) {
             val tileObject = objIter.next();
 
             sb.append(tileObject.getType());
 
-            if (!tileObject.getVars().isEmpty()) {
+            if (tileObject.hasVars()) {
                 sb.append('{').append(NEW_LINE);
 
-                val varIter = tileObject.getVars().entrySet().iterator();
+                val varIter = tileObject.iterator();
                 while (varIter.hasNext()) {
                     val varEntry = varIter.next();
                     val varName = varEntry.getKey();

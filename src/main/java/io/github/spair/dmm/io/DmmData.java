@@ -4,9 +4,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.Set;
+import java.util.Collection;
 
 @Data
 @Setter(AccessLevel.NONE)
@@ -22,6 +24,11 @@ public class DmmData {
     private Map<String, TileContent> tileContentsByKey = new TreeMap<>(new TileKeyComparator());
     private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
     private Map<TileContent, String> keysByTileContent = new HashMap<>();
+
+    public void addKeyAndTileContent(final String key, final TileContent tileContent) {
+        tileContentsByKey.put(key, tileContent);
+        keysByTileContent.put(tileContent, key);
+    }
 
     public void addTileContentByKey(final String key, final TileContent tileContent) {
         tileContentsByKey.put(key, tileContent);
@@ -39,6 +46,10 @@ public class DmmData {
         return tileContentsByKey.get(key);
     }
 
+    public TileContent getTileContentByLocation(final int x, final int y) {
+        return getTileContentByLocation(TileLocation.of(x, y));
+    }
+
     public TileContent getTileContentByLocation(final TileLocation location) {
         return tileContentsByLocation.get(location);
     }
@@ -47,12 +58,56 @@ public class DmmData {
         return keysByTileContent.get(tileContent);
     }
 
+    public String getKeyByLocation(final int x, final int y) {
+        return getKeyByLocation(TileLocation.of(x, y));
+    }
+
     public String getKeyByLocation(final TileLocation location) {
         return getKeyByTileContent(getTileContentByLocation(location));
     }
 
+    public Collection<TileContent> getTileContentsWithKeys() {
+        return tileContentsByKey.values();
+    }
+
+    public Collection<TileContent> getTileContentsWithLocations() {
+        return tileContentsByLocation.values();
+    }
+
+    public Set<String> getKeys() {
+        return tileContentsByKey.keySet();
+    }
+
+    public Set<TileLocation> getLocations() {
+        return tileContentsByLocation.keySet();
+    }
+
+    public void removeKeyAndTileContent(final String key) {
+        keysByTileContent.remove(tileContentsByKey.remove(key));
+    }
+
+    public String removeKeyByTileContent(final TileContent tileContent) {
+        return keysByTileContent.remove(tileContent);
+    }
+
+    public TileContent removeTileContentByKey(final String key) {
+        return tileContentsByKey.remove(key);
+    }
+
+    public TileContent removeTileContentByLocation(final int x, final int y) {
+        return tileContentsByLocation.remove(TileLocation.of(x, y));
+    }
+
+    public TileContent removeTileContentByLocation(final TileLocation tileLocation) {
+        return tileContentsByLocation.remove(tileLocation);
+    }
+
     public boolean hasTileContentByKey(final String key) {
         return tileContentsByKey.containsKey(key);
+    }
+
+    public boolean hasTileContentByLocation(final int x, final int y) {
+        return hasTileContentByLocation(TileLocation.of(x, y));
     }
 
     public boolean hasTileContentByLocation(final TileLocation tileLocation) {
