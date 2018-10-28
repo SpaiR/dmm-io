@@ -22,8 +22,8 @@ public class DmmData {
     private int keyLength;
 
     private Map<String, TileContent> tileContentsByKey = new TreeMap<>(new TileKeyComparator());
-    private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
     private Map<TileContent, String> keysByTileContent = new HashMap<>();
+    private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
 
     public void addKeyAndTileContent(final String key, final TileContent tileContent) {
         tileContentsByKey.put(key, tileContent);

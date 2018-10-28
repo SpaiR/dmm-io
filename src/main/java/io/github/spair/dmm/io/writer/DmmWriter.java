@@ -37,7 +37,7 @@ public final class DmmWriter {
                 writer.write(NEW_LINE);
             }
 
-            writer.write("\"}");
+            writer.write("\"}" + NEW_LINE);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -67,6 +67,7 @@ public final class DmmWriter {
 
                 writer.write("\"}");
             }
+            writer.write(NEW_LINE);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

@@ -1,10 +1,10 @@
 package io.github.spair.dmm.io.reader;
 
-import io.github.spair.dmm.io.*;
-import org.junit.Before;
+import io.github.spair.dmm.io.DmmDataUtil;
+import io.github.spair.dmm.io.ResourceUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DmmReaderTest {
 
