@@ -114,6 +114,6 @@ final class TGMReader extends MapReader {
             varValue  = currentLine.substring(currentLine.indexOf(' ') + 3);
         }
 
-        currentTileObject.addVar(varName, varValue);
+        currentTileObject.putVar(varName, varValue);
     }
 }

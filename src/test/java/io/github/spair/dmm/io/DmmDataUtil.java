@@ -17,8 +17,8 @@ public final class DmmDataUtil {
         TileContent b = new TileContent();
         b.addTileObject(new TileObject("/obj/structure/sign/mining/survival") {
             {
-                addVar("icon_state", "\"survival\"");
-                addVar("dir", "1");
+                putVar("icon_state", "\"survival\"");
+                putVar("dir", "1");
             }
         });
         b.addTileObject(new TileObject("/obj/structure/inflatable/survival"));
@@ -28,7 +28,7 @@ public final class DmmDataUtil {
         c.addTileObject(new TileObject("/turf/simulated/floor/pod"));
         c.addTileObject(new TileObject("/area/survivalpod") {
             {
-                addVar("icon_state", "\"survival\"");
+                putVar("icon_state", "\"survival\"");
             }
         });
 

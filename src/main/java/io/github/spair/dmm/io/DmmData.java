@@ -25,6 +25,15 @@ public class DmmData {
     private Map<TileContent, String> keysByTileContent = new HashMap<>();
     private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
 
+    public void add(final String key, final TileContent tileContent, final int x, final int y) {
+        add(key, tileContent, TileLocation.of(x, y));
+    }
+
+    public void add(final String key, final TileContent tileContent, final TileLocation tileLocation) {
+        addKeyAndTileContent(key, tileContent);
+        tileContentsByLocation.put(tileLocation, tileContent);
+    }
+
     public void addKeyAndTileContent(final String key, final TileContent tileContent) {
         tileContentsByKey.put(key, tileContent);
         keysByTileContent.put(tileContent, key);

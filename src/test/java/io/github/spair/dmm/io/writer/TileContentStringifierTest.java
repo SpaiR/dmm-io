@@ -22,13 +22,13 @@ public class TileContentStringifierTest {
 
         tileObject = new TileObject();
         tileObject.setType("/area/zone");
-        tileObject.addVar("var1", "value1");
+        tileObject.putVar("var1", "value1");
         tileContent.addTileObject(tileObject);
 
         tileObject = new TileObject();
         tileObject.setType("/turf/ground");
-        tileObject.addVar("var2", "value2");
-        tileObject.addVar("var3", "value3");
+        tileObject.putVar("var2", "value2");
+        tileObject.putVar("var3", "value3");
         tileContent.addTileObject(tileObject);
     }
 

@@ -21,7 +21,7 @@ public class TileObject implements Iterable<Map.Entry<String, String>> {
         this.type = type;
     }
 
-    public void addVar(final String name, final String value) {
+    public void putVar(final String name, final String value) {
         vars.put(name, value);
     }
 

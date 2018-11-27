@@ -31,7 +31,7 @@ final class ByondTileContentReader {
                     varDef = varDef.trim();
                     val varName = varDef.substring(0, varDef.indexOf(' '));
                     val varValue = varDef.substring(varDef.indexOf(' ') + 3);
-                    tileObject.addVar(varName, varValue);
+                    tileObject.putVar(varName, varValue);
                 }
             } else {
                 tileObject.setType(item);
