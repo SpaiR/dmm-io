@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.Collection;
 
 @Data
-@Setter(AccessLevel.NONE)
 public class DmmData {
 
     private boolean isTgm = false;
@@ -21,9 +20,9 @@ public class DmmData {
 
     private int keyLength;
 
-    private Map<String, TileContent> tileContentsByKey = new TreeMap<>(new TileKeyComparator());
-    private Map<TileContent, String> keysByTileContent = new HashMap<>();
-    private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
+    @Setter(AccessLevel.NONE) private Map<String, TileContent> tileContentsByKey = new TreeMap<>(new TileKeyComparator());
+    @Setter(AccessLevel.NONE) private Map<TileContent, String> keysByTileContent = new HashMap<>();
+    @Setter(AccessLevel.NONE) private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
 
     public void add(final String key, final TileContent tileContent, final int x, final int y) {
         add(key, tileContent, TileLocation.of(x, y));
@@ -125,21 +124,5 @@ public class DmmData {
 
     public boolean hasKeyByTileContent(final TileContent tileContent) {
         return keysByTileContent.containsKey(tileContent);
-    }
-
-    public void setMaxX(final int maxX) {
-        this.maxX = maxX;
-    }
-
-    public void setMaxY(final int maxY) {
-        this.maxY = maxY;
-    }
-
-    public void setKeyLength(final int keyLength) {
-        this.keyLength = keyLength;
-    }
-
-    public void setTgm(final boolean isTgm) {
-        this.isTgm = isTgm;
     }
 }
