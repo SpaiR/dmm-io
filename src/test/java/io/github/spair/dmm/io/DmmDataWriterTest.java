@@ -1,8 +1,5 @@
-package io.github.spair.dmm.io.writer;
+package io.github.spair.dmm.io;
 
-import io.github.spair.dmm.io.DmmData;
-import io.github.spair.dmm.io.DmmDataUtil;
-import io.github.spair.dmm.io.ResourceUtil;
 import io.github.spair.dmm.io.reader.DmmReader;
 import org.junit.After;
 import org.junit.Before;
@@ -11,10 +8,9 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.file.Files;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class DmmWriterTest {
+public class DmmDataWriterTest {
 
     private File tmpFile;
 
@@ -30,27 +26,27 @@ public class DmmWriterTest {
     }
 
     @Test
-    public void testSaveAsByond() throws Exception {
+    public void saveAsByond() throws Exception {
         DmmData dmmData = DmmDataUtil.getDmmData(false);
-        DmmWriter.saveAsByond(tmpFile, dmmData);
+        DmmDataWriter.saveAsByond(tmpFile, dmmData);
         assertEquals(dmmData, DmmReader.readMap(tmpFile));
 
         File basicFile = ResourceUtil.readResourceFile("basic.dmm");
         dmmData = DmmReader.readMap(basicFile);
-        DmmWriter.saveAsByond(tmpFile, dmmData);
+        DmmDataWriter.saveAsByond(tmpFile, dmmData);
 
         assertFilesAreIdentical(basicFile, tmpFile);
     }
 
     @Test
-    public void testSaveAsTGM() throws Exception {
+    public void saveAsTGM() throws Exception {
         DmmData dmmData = DmmDataUtil.getDmmData(true);
-        DmmWriter.saveAsTGM(tmpFile, dmmData);
+        DmmDataWriter.saveAsTGM(tmpFile, dmmData);
         assertEquals(dmmData, DmmReader.readMap(tmpFile));
 
         File tgmFile = ResourceUtil.readResourceFile("tgm.dmm");
         dmmData = DmmReader.readMap(tgmFile);
-        DmmWriter.saveAsTGM(tmpFile, dmmData);
+        DmmDataWriter.saveAsTGM(tmpFile, dmmData);
 
         assertFilesAreIdentical(tgmFile, tmpFile);
     }

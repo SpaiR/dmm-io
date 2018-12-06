@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -23,6 +24,14 @@ public class DmmData {
     @Setter(AccessLevel.NONE) private Map<String, TileContent> tileContentsByKey = new TreeMap<>(new TileKeyComparator());
     @Setter(AccessLevel.NONE) private Map<TileContent, String> keysByTileContent = new HashMap<>();
     @Setter(AccessLevel.NONE) private Map<TileLocation, TileContent> tileContentsByLocation = new HashMap<>();
+
+    public File saveAsByond(final File fileToSave) {
+        return DmmDataWriter.saveAsByond(fileToSave, this);
+    }
+
+    public File saveAsTGM(final File fileToSave) {
+        return DmmDataWriter.saveAsTGM(fileToSave, this);
+    }
 
     public void add(final String key, final TileContent tileContent, final int x, final int y) {
         add(key, tileContent, TileLocation.of(x, y));
