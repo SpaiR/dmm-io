@@ -4,7 +4,6 @@ import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileContent;
 import io.github.spair.dmm.io.TileLocation;
 import io.github.spair.dmm.io.TileObject;
-import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
 import java.io.BufferedReader;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 
 final class TGMReader extends MapReader {
 
-    private final TileObjectComparator objectComparator = new TileObjectComparator();
     private final Map<String, TileContent> localTileContentsByKey = new HashMap<>();
 
     private TileContent currentTileContent;
@@ -75,7 +73,7 @@ final class TGMReader extends MapReader {
 
         for (val entry : localTileContentsByKey.entrySet()) {
             val tileContent = entry.getValue();
-            tileContent.getTileObjects().sort(objectComparator);
+            tileContent.getTileObjects().sort(tileObjectComparator);
             addTileContentOrTraceDuplicateKey(entry.getKey(), tileContent);
         }
 

@@ -3,6 +3,7 @@ package io.github.spair.dmm.io.reader;
 import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileContent;
 import io.github.spair.dmm.io.TileLocation;
+import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
 import java.io.BufferedReader;
@@ -14,6 +15,8 @@ import java.util.HashSet;
 
 @SuppressWarnings("checkstyle:VisibilityModifier")
 abstract class MapReader {
+
+    final TileObjectComparator tileObjectComparator = new TileObjectComparator();
 
     final DmmData dmmData = new DmmData();
     String currentLine;
