@@ -53,7 +53,7 @@ class OptimizedRandomAccessFile implements AutoCloseable {
      * next read or write occurs.
      * @throws IOException if an I/O error occurs.
      */
-    synchronized long getFilePointer() throws IOException {
+    long getFilePointer() throws IOException {
         if (actualFilePointer == null) {
             return raf.getFilePointer();
         } else {
@@ -73,7 +73,7 @@ class OptimizedRandomAccessFile implements AutoCloseable {
      * @throws IOException if <code>pos</code> is less than <code>0</code> or
      *                     if an I/O error occurs.
      */
-    synchronized void seek(final long pos) throws IOException {
+    void seek(final long pos) throws IOException {
         actualFilePointer = null;
         resetPosition();
         raf.seek(pos);
@@ -114,7 +114,7 @@ class OptimizedRandomAccessFile implements AutoCloseable {
      * encountered before even one byte is read.
      * @throws IOException if an I/O error occurs.
      */
-    private synchronized String readLine(final boolean ignoreLF) throws IOException {
+    private String readLine(final boolean ignoreLF) throws IOException {
         StringBuilder s = null;
         int startChar;
         int separatorIndex = 0;
@@ -192,7 +192,7 @@ class OptimizedRandomAccessFile implements AutoCloseable {
      * @return
      * @throws IOException
      */
-    synchronized String readLine() throws IOException {
+    String readLine() throws IOException {
         return readLine(false);
     }
 
