@@ -2,43 +2,29 @@ package io.github.spair.dmm.io.reader;
 
 import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileContent;
-import io.github.spair.dmm.io.TileLocation;
 import io.github.spair.dmm.io.TileObjectComparator;
 import lombok.val;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
-@SuppressWarnings("checkstyle:VisibilityModifier")
+@SuppressWarnings({"checkstyle:VisibilityModifier", "WeakerAccess"})
 abstract class MapReader {
 
     final TileObjectComparator tileObjectComparator = new TileObjectComparator();
 
-    final DmmData dmmData = new DmmData();
-    String currentLine;
+    OptimizedRandomAccessFile rFile;
+    DmmData dmmData = new DmmData();
 
-    final Map<TileLocation, String> localKeysByLocation = new HashMap<>();
-    private final Map<String, String> localKeysDuplicates = new HashMap<>();
+    String[][] localKeysByLocation;
+    Map<String, String> localKeysDuplicates = new HashMap<>();
 
-    private final BufferedReader bufferedReader;
-
-    MapReader(final BufferedReader bufferedReader) {
-        this.bufferedReader = bufferedReader;
+    MapReader(final OptimizedRandomAccessFile rFile) {
+        this.rFile = rFile;
     }
 
-    abstract DmmData read();
-
-    String readLine() {
-        try {
-            return bufferedReader.readLine();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+    abstract DmmData read() throws Exception;
 
     // Some keys may contain absolutely same content.
     // This method ensures that those keys won't appear in DmmData.
@@ -57,23 +43,21 @@ abstract class MapReader {
     void replaceKeysWithDuplContentForLocations() {
         val duplicatedKeys = localKeysDuplicates.keySet();
 
-        for (val entry : localKeysByLocation.entrySet()) {
-            val location = entry.getKey();
-            val key = entry.getValue();
-
-            if (duplicatedKeys.contains(key)) {
-                localKeysByLocation.put(location, localKeysDuplicates.get(key));
+        for (int y = 0; y < dmmData.getMaxY(); y++) {
+            for (int x = 0; x < dmmData.getMaxY(); x++) {
+                val key = localKeysByLocation[y][x];
+                if (duplicatedKeys.contains(key)) {
+                    localKeysByLocation[y][x] = localKeysDuplicates.get(key);
+                }
             }
         }
     }
 
-    // For consistency reasons Y axis for locations is mirrored, since we read file from top to bottom,
-    // while map in BYOND is represented from bottom to top.
-    void mirrorLocationYAxisAndAddToDmmData() {
-        for (val entry : localKeysByLocation.entrySet()) {
-            val location = entry.getKey();
-            location.setY(dmmData.getMaxY() - location.getY() + 1);
-            dmmData.addTileContentByLocation(location, dmmData.getTileContentByKey(entry.getValue()));
+    void fillDmmDataContent() {
+        for (int y = 0; y < dmmData.getMaxY(); y++) {
+            for (int x = 0; x < dmmData.getMaxX(); x++) {
+                dmmData.addTileContentByLocation(x + 1, y + 1, dmmData.getTileContentByKey(localKeysByLocation[y][x]));
+            }
         }
     }
 
@@ -82,8 +66,10 @@ abstract class MapReader {
     void removeKeysWithoutLocation() {
         val keysWithLocation = new HashSet<String>();
 
-        for (val location : dmmData.getLocations()) {
-            keysWithLocation.add(dmmData.getKeyByLocation(location));
+        for (int y = 1; y <= dmmData.getMaxY(); y++) {
+            for (int x = 1; x <= dmmData.getMaxX(); x++) {
+                keysWithLocation.add(dmmData.getKeyByLocation(x, y));
+            }
         }
 
         for (val key : new HashSet<>(dmmData.getKeys())) {

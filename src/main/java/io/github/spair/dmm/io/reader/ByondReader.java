@@ -2,11 +2,11 @@ package io.github.spair.dmm.io.reader;
 
 import io.github.spair.dmm.io.DmmData;
 import io.github.spair.dmm.io.TileContent;
-import io.github.spair.dmm.io.TileLocation;
 import io.github.spair.dmm.io.TileObject;
 import lombok.val;
+import lombok.var;
 
-import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 final class ByondReader extends MapReader {
@@ -15,21 +15,25 @@ final class ByondReader extends MapReader {
     private final Pattern objWithVarPattern = Pattern.compile("^(/.+)\\{(.*)}");
     private final Pattern varsPattern = Pattern.compile(";[ ]?(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-    private int currentY = 1;
+    private int currentY;
     private int maxX;
+    private int maxY;
 
     private boolean isTilesRead = false;
+    private boolean isMetaInfoRead = false;
 
     private int keyLength;
     private Pattern keySplit;
 
-    ByondReader(final BufferedReader bufferedReader) {
-        super(bufferedReader);
+    ByondReader(final OptimizedRandomAccessFile rFile) {
+        super(rFile);
     }
 
     @Override
-    public DmmData read() {
-        while ((currentLine = readLine()) != null) {
+    public DmmData read() throws IOException {
+        String currentLine;
+
+        while ((currentLine = rFile.readLine()) != null) {
             if (currentLine.isEmpty()) {
                 isTilesRead = true;
                 continue;
@@ -38,31 +42,63 @@ final class ByondReader extends MapReader {
             val firstLineChar = currentLine.charAt(0);
 
             if (firstLineChar == '"' && !isTilesRead) {
-                readTileDeclaration();
-            } else if (firstLineChar != '(') {
+                readTileDeclaration(currentLine);
+            } else {
+                if (!isMetaInfoRead) {
+                    long currentPtr = rFile.getFilePointer();
+                    readMetaInfo();
+                    rFile.seek(currentPtr);
+                    isMetaInfoRead = true;
+                    continue;
+                }
+
+                if (firstLineChar != '(') {
+                    if (firstLineChar != '"') {
+                        readMapTiles(currentLine);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        dmmData.setDmmSize(maxX, maxY);
+        dmmData.setKeyLength(keyLength);
+
+        replaceKeysWithDuplContentForLocations();
+        fillDmmDataContent();
+        removeKeysWithoutLocation();
+
+        return dmmData;
+    }
+
+    private void readMetaInfo() throws IOException {
+        var currentLine = rFile.readLine();
+        maxX = keySplit.split(currentLine).length;
+
+        var lineCounter = 1;
+
+        while ((currentLine = rFile.readLine()) != null) {
+            val firstLineChar = currentLine.charAt(0);
+
+            if (firstLineChar != '(') {
                 if (firstLineChar != '"') {
-                    readMapTiles();
+                    lineCounter++;
                 } else {
                     break;
                 }
             }
         }
 
-        dmmData.setMaxX(maxX);
-        dmmData.setMaxY(currentY - 1);
-
-        replaceKeysWithDuplContentForLocations();
-        mirrorLocationYAxisAndAddToDmmData();
-        removeKeysWithoutLocation();
-
-        return dmmData;
+        maxY = lineCounter;
+        localKeysByLocation = new String[maxY][maxX];
+        currentY = maxY - 1;
     }
 
-    private void readTileDeclaration() {
+    private void readTileDeclaration(final String currentLine) {
         if (keyLength == 0) {
             keyLength = currentLine.indexOf('"', 1) - 1;
             keySplit = Pattern.compile(String.format("(?<=\\G.{%d})", keyLength));
-            dmmData.setKeyLength(keyLength);
         }
 
         val key = currentLine.substring(1, 1 + keyLength);
@@ -72,14 +108,14 @@ final class ByondReader extends MapReader {
         addTileContentOrTraceDuplicateKey(key, tileContent);
     }
 
-    private void readMapTiles() {
-        val keys = keySplit.split(currentLine);
-        maxX = keys.length;
-        int x = 1;
-        for (String key : keys) {
-            localKeysByLocation.put(TileLocation.of(x++, currentY), key);
+    private void readMapTiles(final String currentLine) {
+        int x = 0;
+
+        for (String key : keySplit.split(currentLine)) {
+            localKeysByLocation[currentY][x++] = key;
         }
-        currentY++;
+
+        currentY--;
     }
 
     private TileContent readTileContent(final String contentText) {

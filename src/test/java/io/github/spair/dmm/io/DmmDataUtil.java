@@ -5,9 +5,7 @@ public final class DmmDataUtil {
         DmmData dmmData = new DmmData();
 
         dmmData.setTgm(isTGM);
-
-        dmmData.setMaxX(3);
-        dmmData.setMaxY(3);
+        dmmData.setDmmSize(3, 3);
         dmmData.setKeyLength(1);
 
         TileContent a = new TileContent();
@@ -40,17 +38,15 @@ public final class DmmDataUtil {
         dmmData.addTileContentByKey("b", b);
         dmmData.addTileContentByKey("c", c);
 
-        dmmData.addTileContentByLocation(TileLocation.of(1, 1), a);
-        dmmData.addTileContentByLocation(TileLocation.of(2, 1), a);
-        dmmData.addTileContentByLocation(TileLocation.of(3, 1), a);
-
-        dmmData.addTileContentByLocation(TileLocation.of(1, 2), b);
-        dmmData.addTileContentByLocation(TileLocation.of(2, 2), c);
-        dmmData.addTileContentByLocation(TileLocation.of(3, 2), b);
-
-        dmmData.addTileContentByLocation(TileLocation.of(1, 3), a);
-        dmmData.addTileContentByLocation(TileLocation.of(2, 3), a);
-        dmmData.addTileContentByLocation(TileLocation.of(3, 3), a);
+        dmmData.addTileContentByLocation(1, 1, a);
+        dmmData.addTileContentByLocation(2, 1, a);
+        dmmData.addTileContentByLocation(3, 1, c);
+        dmmData.addTileContentByLocation(1, 2, b);
+        dmmData.addTileContentByLocation(2, 2, c);
+        dmmData.addTileContentByLocation(3, 2, b);
+        dmmData.addTileContentByLocation(1, 3, a);
+        dmmData.addTileContentByLocation(2, 3, a);
+        dmmData.addTileContentByLocation(3, 3, a);
 
         return dmmData;
     }
