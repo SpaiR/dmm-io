@@ -61,7 +61,7 @@ final class TGMReader extends MapReader {
             } else {
                 if (!isMetaInfoRead) {
                     long currentPtr = rFile.getFilePointer();
-                    readMetaInfo();
+                    readMetaInfo(currentLine);
                     rFile.seek(currentPtr);
                     isMetaInfoRead = true;
                 }
@@ -95,10 +95,10 @@ final class TGMReader extends MapReader {
         return dmmData;
     }
 
-    private void readMetaInfo() throws IOException {
+    private void readMetaInfo(final String firstLine) throws IOException {
         String currentLine;
 
-        int xCounter = 0;
+        int xCounter = Integer.parseInt(firstLine.substring(1, firstLine.indexOf(',')));
         int yCounter = 0;
 
         while ((currentLine = rFile.readLine()) != null) {
@@ -107,7 +107,7 @@ final class TGMReader extends MapReader {
             switch (firstLineChar) {
                 case '(':
                     xCounter = Integer.parseInt(currentLine.substring(1, currentLine.indexOf(',')));
-                    yCounter = 1;
+                    yCounter = 0;
                     break;
                 case '"':
                     break;
@@ -117,7 +117,7 @@ final class TGMReader extends MapReader {
         }
 
         maxX = xCounter;
-        maxY = yCounter - 1;
+        maxY = yCounter;
         localKeysByLocation = new String[maxY][maxX];
     }
 

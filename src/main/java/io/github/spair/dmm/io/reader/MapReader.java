@@ -44,7 +44,7 @@ abstract class MapReader {
         val duplicatedKeys = localKeysDuplicates.keySet();
 
         for (int y = 0; y < dmmData.getMaxY(); y++) {
-            for (int x = 0; x < dmmData.getMaxY(); x++) {
+            for (int x = 0; x < dmmData.getMaxX(); x++) {
                 val key = localKeysByLocation[y][x];
                 if (duplicatedKeys.contains(key)) {
                     localKeysByLocation[y][x] = localKeysDuplicates.get(key);
